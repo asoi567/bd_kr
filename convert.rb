@@ -1,4 +1,5 @@
 require 'fileutils'
+Encoding.default_external = 'CP866'
 
 class Converter
   attr_accessor :fio, :dir
@@ -14,6 +15,8 @@ class Converter
 
     Dir.glob('ASB/*').each do |file_name|
       new_file_name = convert file_name.gsub(/^ASB\//, '')
+      content = File.read file_name
+      File.write File.join(dir, '/', new_file_name), convert(content)
     end
   end
 
@@ -23,6 +26,8 @@ class Converter
     string
       .gsub(/ASBF_/, "#{fio}F_")
       .gsub(/asbf_/, "#{fio.downcase}f_")
+      .gsub(/asb\s/, "#{fio.downcase} ")
+      .gsub(/asb_/, "#{fio.downcase}_")
   end
 end
 
